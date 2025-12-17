@@ -3,8 +3,8 @@
 namespace Config
 {
     // Window sizes
-    constexpr int WINDOW_WIDTH = 600;
-    constexpr int WINDOW_HEIGHT = 800;
+    constexpr int WINDOW_WIDTH = 800;
+    constexpr int WINDOW_HEIGHT = 600;
 
     // Window title
     constexpr char WINDOW_TITLE[] = "xprss learning OpenGL";
