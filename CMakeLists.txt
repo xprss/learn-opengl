@@ -18,7 +18,13 @@ target_include_directories(glad
         external/glad/include
 )
 
+
 add_executable(learn_opengl src/main.cpp)
+
+target_include_directories(learn_opengl
+    PRIVATE
+        include
+)
 
 target_link_libraries(learn_opengl
     PRIVATE
