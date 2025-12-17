@@ -32,14 +32,37 @@ target_link_libraries(appcontext
 )
 
 target_include_directories(appcontext
-    PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
+    PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/includes
 )
+
+add_library(imgui
+    external/imgui/imgui.cpp
+    external/imgui/imgui_draw.cpp
+    external/imgui/imgui_tables.cpp
+    external/imgui/imgui_widgets.cpp
+    external/imgui/backends/imgui_impl_glfw.cpp
+    external/imgui/backends/imgui_impl_opengl3.cpp
+)
+
+target_include_directories(imgui
+    PUBLIC
+        external/imgui
+        external/imgui/backends
+)
+
+target_link_libraries(imgui
+    PUBLIC
+        glfw
+        OpenGL::GL
+)
+
 
 add_executable(learn_opengl src/main.cpp)
 
 target_include_directories(learn_opengl
     PRIVATE
-    include
+    includes
+    lib
 )
 
 target_link_libraries(learn_opengl
@@ -48,4 +71,5 @@ target_link_libraries(learn_opengl
     glfw
     glad
     appcontext
+    imgui
 )

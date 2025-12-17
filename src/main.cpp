@@ -1,9 +1,12 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include "imgui.h"
+#include "backends/imgui_impl_glfw.h"
+#include "backends/imgui_impl_opengl3.h"
 #include <iostream>
 #include <cmath>
-#include "Config.hpp"
-#include "AppContext.hpp"
+#include <includes/Config.hpp>
+#include <AppContext.hpp>
 
 void mouse_button_callback(GLFWwindow *, int, int, int);
 void processInput();
