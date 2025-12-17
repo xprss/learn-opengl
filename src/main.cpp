@@ -13,18 +13,15 @@ int main(int argc, char const *argv[])
     AppContext &app = AppContext::get();
 
     app.initWindow(Config::WINDOW_WIDTH, Config::WINDOW_HEIGHT, Config::WINDOW_TITLE);
+    glfwSetMouseButtonCallback(app.window, mouse_button_callback);
 
-    GLFWwindow *window = app.window;
-
-    glfwSetMouseButtonCallback(window, mouse_button_callback);
-
-    if (window == NULL)
+    if (app.window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
         return -1;
     }
-    glfwMakeContextCurrent(window);
+    glfwMakeContextCurrent(app.window);
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
@@ -34,13 +31,13 @@ int main(int argc, char const *argv[])
 
     glViewport(0, 0, Config::WINDOW_HEIGHT, Config::WINDOW_WIDTH);
 
-    while (!glfwWindowShouldClose(window))
+    while (!glfwWindowShouldClose(app.window))
     {
         processInput();
-        glClearColor(app.r, app.g, app.b, 1.0f);
+        glClearColor(app.red, app.green, app.blue, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glfwSwapBuffers(window);
+        glfwSwapBuffers(app.window);
         glfwPollEvents();
     }
     return 0;
@@ -52,11 +49,11 @@ void processInput()
     if (glfwGetKey(app.window, GLFW_KEY_ESCAPE) == GLFW_PRESS || glfwGetKey(app.window, GLFW_KEY_Q) == GLFW_PRESS)
         glfwSetWindowShouldClose(app.window, true);
     if (glfwGetKey(app.window, GLFW_KEY_R) == GLFW_PRESS)
-        app.r = std::fmod(app.r + 0.001f, 1.0f);
+        app.red = std::fmod(app.red + 0.001f, 1.0f);
     if (glfwGetKey(app.window, GLFW_KEY_G) == GLFW_PRESS)
-        app.g = std::fmod(app.g + 0.001f, 1.0f);
+        app.green = std::fmod(app.green + 0.001f, 1.0f);
     if (glfwGetKey(app.window, GLFW_KEY_B) == GLFW_PRESS)
-        app.b = std::fmod(app.b + 0.001f, 1.0f);
+        app.blue = std::fmod(app.blue + 0.001f, 1.0f);
 }
 
 void mouse_button_callback(GLFWwindow *window, int button, int action, int mods)
