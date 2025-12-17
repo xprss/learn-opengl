@@ -3,23 +3,19 @@
 #include <iostream>
 #include <cmath>
 #include "Config.hpp"
+#include "AppContext.hpp"
 
-void mouse_button_callback(GLFWwindow*, int, int, int);
-void processInput(GLFWwindow *, float *, float *, float *);
+void mouse_button_callback(GLFWwindow *, int, int, int);
+void processInput();
 
 int main(int argc, char const *argv[])
 {
-    glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+    AppContext &app = AppContext::get();
 
-    float r = 0.0f, g = 0.0f, b = 0.0f;
-    // glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    app.initWindow(Config::WINDOW_WIDTH, Config::WINDOW_HEIGHT, Config::WINDOW_TITLE);
 
-    GLFWwindow *window = glfwCreateWindow(Config::WINDOW_HEIGHT, Config::WINDOW_WIDTH, Config::WINDOW_TITLE, NULL, NULL);
-    
+    GLFWwindow *window = app.window;
+
     glfwSetMouseButtonCallback(window, mouse_button_callback);
 
     if (window == NULL)
@@ -40,8 +36,8 @@ int main(int argc, char const *argv[])
 
     while (!glfwWindowShouldClose(window))
     {
-        processInput(window, &r, &g, &b);
-        glClearColor(r, g, b, 1.0f);
+        processInput();
+        glClearColor(app.r, app.g, app.b, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         glfwSwapBuffers(window);
@@ -50,25 +46,26 @@ int main(int argc, char const *argv[])
     return 0;
 }
 
-void processInput(GLFWwindow *window, float *r, float *g, float *b)
+void processInput()
 {
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
-    if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
-        *r = std::fmod(*r + 0.001f, 1.0f);
-    if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS)
-        *g = std::fmod(*g + 0.001f, 1.0f);
-    if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS)
-        *b = std::fmod(*b + 0.001f, 1.0f);
+    AppContext &app = AppContext::get();
+    if (glfwGetKey(app.window, GLFW_KEY_ESCAPE) == GLFW_PRESS || glfwGetKey(app.window, GLFW_KEY_Q) == GLFW_PRESS)
+        glfwSetWindowShouldClose(app.window, true);
+    if (glfwGetKey(app.window, GLFW_KEY_R) == GLFW_PRESS)
+        app.r = std::fmod(app.r + 0.001f, 1.0f);
+    if (glfwGetKey(app.window, GLFW_KEY_G) == GLFW_PRESS)
+        app.g = std::fmod(app.g + 0.001f, 1.0f);
+    if (glfwGetKey(app.window, GLFW_KEY_B) == GLFW_PRESS)
+        app.b = std::fmod(app.b + 0.001f, 1.0f);
 }
 
-void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+void mouse_button_callback(GLFWwindow *window, int button, int action, int mods)
 {
-    if(button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE)
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE)
     {
         double xpos, ypos;
         glfwGetCursorPos(window, &xpos, &ypos);
-        
+
         std::cout << "Mouse position: " << xpos << ", " << ypos << std::endl;
     }
 }

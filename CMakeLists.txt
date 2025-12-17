@@ -15,20 +15,37 @@ add_library(glad STATIC
 
 target_include_directories(glad
     PUBLIC
-        external/glad/include
+    external/glad/include
 )
 
+add_library(appcontext
+    lib/AppContext.cpp
+)
+
+target_include_directories(appcontext
+    PUBLIC lib
+)
+
+target_link_libraries(appcontext
+    PUBLIC
+    glfw
+)
+
+target_include_directories(appcontext
+    PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
 
 add_executable(learn_opengl src/main.cpp)
 
 target_include_directories(learn_opengl
     PRIVATE
-        include
+    include
 )
 
 target_link_libraries(learn_opengl
     PRIVATE
-        OpenGL::GL
-        glfw
-        glad
+    OpenGL::GL
+    glfw
+    glad
+    appcontext
 )
