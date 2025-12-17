@@ -4,6 +4,7 @@
 #include <cmath>
 #include "Config.hpp"
 
+void mouse_button_callback(GLFWwindow*, int, int, int);
 void processInput(GLFWwindow *, float *, float *, float *);
 
 int main(int argc, char const *argv[])
@@ -18,6 +19,9 @@ int main(int argc, char const *argv[])
     // glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
     GLFWwindow *window = glfwCreateWindow(Config::WINDOW_HEIGHT, Config::WINDOW_WIDTH, Config::WINDOW_TITLE, NULL, NULL);
+    
+    glfwSetMouseButtonCallback(window, mouse_button_callback);
+
     if (window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -56,4 +60,15 @@ void processInput(GLFWwindow *window, float *r, float *g, float *b)
         *g = std::fmod(*g + 0.001f, 1.0f);
     if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS)
         *b = std::fmod(*b + 0.001f, 1.0f);
+}
+
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+{
+    if(button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE)
+    {
+        double xpos, ypos;
+        glfwGetCursorPos(window, &xpos, &ypos);
+        
+        std::cout << "Mouse position: " << xpos << ", " << ypos << std::endl;
+    }
 }
