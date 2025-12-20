@@ -9,7 +9,7 @@
 #include <AppContext.hpp>
 
 void mouse_button_callback(GLFWwindow *, int, int, int);
-void processInput();
+void process_input();
 
 int main(int argc, char const *argv[])
 {
@@ -36,7 +36,7 @@ int main(int argc, char const *argv[])
 
     while (!glfwWindowShouldClose(app.window))
     {
-        processInput();
+        process_input();
         glClearColor(app.red, app.green, app.blue, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
@@ -46,7 +46,7 @@ int main(int argc, char const *argv[])
     return 0;
 }
 
-void processInput()
+void process_input()
 {
     AppContext &app = AppContext::get();
     if (glfwGetKey(app.window, GLFW_KEY_ESCAPE) == GLFW_PRESS || glfwGetKey(app.window, GLFW_KEY_Q) == GLFW_PRESS)
