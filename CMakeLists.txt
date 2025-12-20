@@ -37,6 +37,7 @@ target_include_directories(appcontext
 
 add_library(imgui
     external/imgui/imgui.cpp
+    external/imgui/imgui_demo.cpp
     external/imgui/imgui_draw.cpp
     external/imgui/imgui_tables.cpp
     external/imgui/imgui_widgets.cpp

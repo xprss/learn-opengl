@@ -16,7 +16,8 @@ int main(int argc, char const *argv[])
     AppContext &app = AppContext::get();
 
     app.initWindow(Config::WINDOW_WIDTH, Config::WINDOW_HEIGHT, Config::WINDOW_TITLE);
-    glfwSetMouseButtonCallback(app.window, mouse_button_callback);
+
+    // glfwSetMouseButtonCallback(app.window, mouse_button_callback);
 
     if (app.window == NULL)
     {
@@ -34,15 +35,42 @@ int main(int argc, char const *argv[])
 
     glViewport(0, 0, Config::WINDOW_HEIGHT, Config::WINDOW_WIDTH);
 
+    // Setup Dear ImGui context
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO();
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+    // io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // IF using Docking Branch
+
+    // Setup Platform/Renderer backends
+    ImGui_ImplGlfw_InitForOpenGL(app.window, true);          // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
+    ImGui_ImplOpenGL3_Init();
+
     while (!glfwWindowShouldClose(app.window))
     {
         process_input();
-        glClearColor(app.red, app.green, app.blue, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        // glClearColor(app.red, app.green, app.blue, 1.0f);
+        // glClear(GL_COLOR_BUFFER_BIT);
 
         glfwSwapBuffers(app.window);
         glfwPollEvents();
+        // (Your code calls glfwPollEvents())
+        // ...
+        // Start the Dear ImGui frame
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+        ImGui::ShowDemoWindow(); // Show demo window! :)
+        // Rendering
+        // (Your code clears your framebuffer, renders your other stuff etc.)
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        // (Your code calls glfwSwapBuffers() etc.)
     }
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
     return 0;
 }
 
