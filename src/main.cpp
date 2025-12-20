@@ -33,7 +33,7 @@ int main(int argc, char const *argv[])
         return -1;
     }
 
-    glViewport(0, 0, Config::WINDOW_HEIGHT, Config::WINDOW_WIDTH);
+    glViewport(0, 0, Config::WINDOW_WIDTH, Config::WINDOW_HEIGHT);
 
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
