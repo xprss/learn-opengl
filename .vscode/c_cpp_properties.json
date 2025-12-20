@@ -2,9 +2,13 @@
     "configurations": [
         {
             "name": "Mac",
-            "includePath": [
-                "${workspaceFolder}/**",
+            "includePath": [                
                 "${workspaceFolder}",
+                "${workspaceFolder}/lib",
+                "${workspaceFolder}/includes",
+                "${workspaceFolder}/external/glad/include",
+                "${workspaceFolder}/external/imgui",
+                "${workspaceFolder}/external/imgui/backends",
                 "/opt/homebrew/include",
                 "/opt/homebrew/Cellar/sfml/3.0.2/include/SFML"
             ],
