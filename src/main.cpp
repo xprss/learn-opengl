@@ -5,7 +5,7 @@
 #include "backends/imgui_impl_opengl3.h"
 #include <iostream>
 #include <cmath>
-#include <includes/Config.hpp>
+#include <Config.hpp>
 #include <AppContext.hpp>
 
 void mouse_button_callback(GLFWwindow *, int, int, int);
