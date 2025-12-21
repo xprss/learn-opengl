@@ -70,7 +70,7 @@ int main(int argc, char const *argv[])
         {
             try
             {
-                app.exportColorToFile(nullptr);
+                app.exportColorToFile("background_color.txt");
             }
             catch (const std::runtime_error &e)
             {
