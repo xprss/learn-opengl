@@ -13,4 +13,5 @@ namespace Config
     constexpr float CLEAR_R = 0.0f;
     constexpr float CLEAR_G = 0.0f;
     constexpr float CLEAR_B = 0.0f;
+    constexpr float CLEAR_ALPHA = 1.0f;
 }
