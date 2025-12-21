@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(learn_opengl LANGUAGES C CXX)
+project(color_picker LANGUAGES C CXX)
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
@@ -58,15 +58,15 @@ target_link_libraries(imgui
 )
 
 
-add_executable(learn_opengl src/main.cpp)
+add_executable(color_picker MACOSX_BUNDLE src/main.cpp)
 
-target_include_directories(learn_opengl
+target_include_directories(color_picker
     PRIVATE
     includes
     lib
 )
 
-target_link_libraries(learn_opengl
+target_link_libraries(color_picker
     PRIVATE
     OpenGL::GL
     glfw
