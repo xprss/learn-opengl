@@ -19,6 +19,14 @@ void AppContext::incrementColor(float dr, float dg, float db)
     this->colors4[Config::COLOR_B_INDEX] = std::fmod(this->colors4[Config::COLOR_B_INDEX] + db, 1.0f);
 }
 
+void AppContext::resetColor()
+{
+    this->colors4[Config::COLOR_R_INDEX] = Config::CLEAR_R;
+    this->colors4[Config::COLOR_G_INDEX] = Config::CLEAR_G;
+    this->colors4[Config::COLOR_B_INDEX] = Config::CLEAR_B;
+    this->colors4[Config::COLOR_ALPHA_INDEX] = Config::CLEAR_ALPHA;
+}
+
 void AppContext::initWindow(int width, int height, const char *title)
 {
     if (!glfwInit())

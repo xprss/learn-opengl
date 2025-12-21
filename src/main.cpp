@@ -57,6 +57,10 @@ int main(int argc, char const *argv[])
         ImGui::Begin("Color Adjuster");
         ImGui::Text("Press R/G/B to increase Red/Green/Blue components");
         ImGui::ColorEdit4("Background Color", app.colors4.data());
+        if (ImGui::Button("Reset Color"))
+        {
+            app.resetColor();
+        }
         glClearColor(app.colors4[Config::COLOR_R_INDEX], app.colors4[Config::COLOR_G_INDEX], app.colors4[Config::COLOR_B_INDEX], app.colors4[Config::COLOR_ALPHA_INDEX]);
         ImGui::End();
 
