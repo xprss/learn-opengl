@@ -54,6 +54,7 @@ int main(int argc, char const *argv[])
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
+        ImGui::SetNextWindowPos(ImVec2(Config::WINDOW_WIDTH / 2.0f, Config::WINDOW_HEIGHT / 2.0f), ImGuiCond_Always, ImVec2(0.5f, 0.5f));
         ImGui::Begin("Color Adjuster", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
         ImGui::Text("Press R/G/B to increase Red/Green/Blue components");
         ImGui::ColorEdit4("Background Color", app.colors4.data());
@@ -83,6 +84,7 @@ int main(int argc, char const *argv[])
 
         ImGui::End();
 
+        ImGui::SetNextWindowPos(ImVec2(Config::WINDOW_WIDTH / 2.0f, 0.0f), ImGuiCond_Always, ImVec2(0.5f, -0.5f));
         ImGui::Begin("Instructions", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
         ImGui::Text("Use the following keys to adjust background color:");
         ImGui::BulletText("R: Increase Red");
