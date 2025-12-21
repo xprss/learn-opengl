@@ -7,6 +7,12 @@ AppContext::AppContext()
     this->red = Config::CLEAR_R;
     this->green = Config::CLEAR_G;
     this->blue = Config::CLEAR_B;
+    this->alpha = Config::CLEAR_ALPHA;
+    
+    this->colors4[0] = &this->red;
+    this->colors4[1] = &this->green;
+    this->colors4[2] = &this->blue;
+    this->colors4[3] = &this->alpha;
 }
 
 AppContext &AppContext::get()

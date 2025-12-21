@@ -8,7 +8,8 @@ public:
     static AppContext &get();
 
     GLFWwindow *window = nullptr;
-    float red = 0, green = 0, blue = 0;
+    float *colors4[4];
+    float red, green, blue, alpha;
 
     void incrementColor(float dr, float dg, float db);
     void initWindow(int width, int height, const char *title);
