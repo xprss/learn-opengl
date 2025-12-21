@@ -48,3 +48,22 @@ void AppContext::initWindow(int width, int height, const char *title)
         exit(-1);
     }
 }
+
+bool AppContext::exportColorToFile(const char *filename)
+{
+    FILE *file = fopen(filename, "w");
+
+    if (!file) 
+    {
+        throw std::runtime_error("File open error" + std::string(filename));
+    }
+
+    fprintf(file, "R: %.3f\nG: %.3f\nB: %.3f\nA: %.3f\n",
+            this->colors4[Config::COLOR_R_INDEX],
+            this->colors4[Config::COLOR_G_INDEX],
+            this->colors4[Config::COLOR_B_INDEX],
+            this->colors4[Config::COLOR_ALPHA_INDEX]);
+    fclose(file);
+
+    return true;
+}
