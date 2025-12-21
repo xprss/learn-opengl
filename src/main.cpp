@@ -79,6 +79,12 @@ int main(int argc, char const *argv[])
 void process_input()
 {
     AppContext &app = AppContext::get();
+
+    // delta variations for r, g, b
+    float dr = 0.0f;
+    float dg = 0.0f;
+    float db = 0.0f;
+
     if (glfwGetKey(app.window, GLFW_KEY_ESCAPE) == GLFW_PRESS || glfwGetKey(app.window, GLFW_KEY_Q) == GLFW_PRESS)
     {
         glfwSetWindowShouldClose(app.window, true);
@@ -87,33 +93,34 @@ void process_input()
     {
         if (!glfwGetKey(app.window, GLFW_KEY_LEFT_SHIFT) && !glfwGetKey(app.window, GLFW_KEY_RIGHT_SHIFT))
         {
-            app.colors4[Config::COLOR_R_INDEX] = std::fmod(app.colors4[Config::COLOR_R_INDEX] + 0.001f, 1.0f);
+            dr = 0.001f;
         }
         else
         {
-            app.colors4[Config::COLOR_R_INDEX] = std::fmod(app.colors4[Config::COLOR_R_INDEX] - 0.001f, 1.0f);
+            dr = -0.001f;
         }
     }
     if (glfwGetKey(app.window, GLFW_KEY_G) == GLFW_PRESS)
     {
         if (!glfwGetKey(app.window, GLFW_KEY_LEFT_SHIFT) && !glfwGetKey(app.window, GLFW_KEY_RIGHT_SHIFT))
         {
-            app.colors4[Config::COLOR_G_INDEX] = std::fmod(app.colors4[Config::COLOR_G_INDEX] + 0.001f, 1.0f);
+            dg = 0.001f;
         }
         else
         {
-            app.colors4[Config::COLOR_G_INDEX] = std::fmod(app.colors4[Config::COLOR_G_INDEX] - 0.001f, 1.0f);
+            dg = -0.001f;
         }
     }
     if (glfwGetKey(app.window, GLFW_KEY_B) == GLFW_PRESS)
     {
         if (!glfwGetKey(app.window, GLFW_KEY_LEFT_SHIFT) && !glfwGetKey(app.window, GLFW_KEY_RIGHT_SHIFT))
         {
-            app.colors4[Config::COLOR_B_INDEX] = std::fmod(app.colors4[Config::COLOR_B_INDEX] + 0.001f, 1.0f);
+            db = 0.001f;
         }
         else
         {
-            app.colors4[Config::COLOR_B_INDEX] = std::fmod(app.colors4[Config::COLOR_B_INDEX] - 0.001f, 1.0f);
+            db = -0.001f;
         }
     }
+    app.incrementColor(dr, dg, db);
 }
