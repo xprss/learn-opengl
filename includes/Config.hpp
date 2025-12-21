@@ -14,4 +14,10 @@ namespace Config
     constexpr float CLEAR_G = 0.0f;
     constexpr float CLEAR_B = 0.0f;
     constexpr float CLEAR_ALPHA = 1.0f;
+
+    // Color and alpha indexes
+    constexpr int COLOR_R_INDEX = 0;
+    constexpr int COLOR_G_INDEX = 1;
+    constexpr int COLOR_B_INDEX = 2;
+    constexpr int COLOR_ALPHA_INDEX = 3;
 }
