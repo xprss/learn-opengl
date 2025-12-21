@@ -8,7 +8,6 @@
 #include <Config.hpp>
 #include <AppContext.hpp>
 
-void mouse_button_callback(GLFWwindow *, int, int, int);
 void process_input();
 
 int main(int argc, char const *argv[])
@@ -16,8 +15,6 @@ int main(int argc, char const *argv[])
     AppContext &app = AppContext::get();
 
     app.initWindow(Config::WINDOW_WIDTH, Config::WINDOW_HEIGHT, Config::WINDOW_TITLE);
-
-    // glfwSetMouseButtonCallback(app.window, mouse_button_callback);
 
     if (app.window == NULL)
     {
@@ -114,16 +111,5 @@ void process_input()
         {
             app.colors4[Config::COLOR_B_INDEX] = std::fmod(app.colors4[Config::COLOR_B_INDEX] - 0.001f, 1.0f);
         }
-    }
-}
-
-void mouse_button_callback(GLFWwindow *window, int button, int action, int mods)
-{
-    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE)
-    {
-        double xpos, ypos;
-        glfwGetCursorPos(window, &xpos, &ypos);
-
-        std::cout << "Mouse position: " << xpos << ", " << ypos << std::endl;
     }
 }
