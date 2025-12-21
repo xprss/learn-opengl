@@ -59,8 +59,8 @@ int main(int argc, char const *argv[])
 
         ImGui::Begin("Color Adjuster");
         ImGui::Text("Press R/G/B to increase Red/Green/Blue components");
-        ImGui::ColorEdit4("Background Color", *app.colors4);
-        glClearColor(app.red, app.green, app.blue, app.alpha);
+        ImGui::ColorEdit4("Background Color", app.colors4.data());
+        glClearColor(app.colors4[Config::COLOR_R_INDEX], app.colors4[Config::COLOR_G_INDEX], app.colors4[Config::COLOR_B_INDEX], app.colors4[Config::COLOR_ALPHA_INDEX]);
         ImGui::End();
 
         ImGui::Render();
@@ -86,33 +86,33 @@ void process_input()
     {
         if (!glfwGetKey(app.window, GLFW_KEY_LEFT_SHIFT) && !glfwGetKey(app.window, GLFW_KEY_RIGHT_SHIFT))
         {
-            app.red = std::fmod(app.red + 0.001f, 1.0f);
+            app.colors4[Config::COLOR_R_INDEX] = std::fmod(app.colors4[Config::COLOR_R_INDEX] + 0.001f, 1.0f);
         }
         else
         {
-            app.red = std::fmod(app.red - 0.001f, 1.0f);
+            app.colors4[Config::COLOR_R_INDEX] = std::fmod(app.colors4[Config::COLOR_R_INDEX] - 0.001f, 1.0f);
         }
     }
     if (glfwGetKey(app.window, GLFW_KEY_G) == GLFW_PRESS)
     {
         if (!glfwGetKey(app.window, GLFW_KEY_LEFT_SHIFT) && !glfwGetKey(app.window, GLFW_KEY_RIGHT_SHIFT))
         {
-            app.green = std::fmod(app.green + 0.001f, 1.0f);
+            app.colors4[Config::COLOR_G_INDEX] = std::fmod(app.colors4[Config::COLOR_G_INDEX] + 0.001f, 1.0f);
         }
         else
         {
-            app.green = std::fmod(app.green - 0.001f, 1.0f);
+            app.colors4[Config::COLOR_G_INDEX] = std::fmod(app.colors4[Config::COLOR_G_INDEX] - 0.001f, 1.0f);
         }
     }
     if (glfwGetKey(app.window, GLFW_KEY_B) == GLFW_PRESS)
     {
         if (!glfwGetKey(app.window, GLFW_KEY_LEFT_SHIFT) && !glfwGetKey(app.window, GLFW_KEY_RIGHT_SHIFT))
         {
-            app.blue = std::fmod(app.blue + 0.001f, 1.0f);
+            app.colors4[Config::COLOR_B_INDEX] = std::fmod(app.colors4[Config::COLOR_B_INDEX] + 0.001f, 1.0f);
         }
         else
         {
-            app.blue = std::fmod(app.blue - 0.001f, 1.0f);
+            app.colors4[Config::COLOR_B_INDEX] = std::fmod(app.colors4[Config::COLOR_B_INDEX] - 0.001f, 1.0f);
         }
     }
 }

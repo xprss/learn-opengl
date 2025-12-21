@@ -4,15 +4,6 @@
 
 AppContext::AppContext()
 {
-    this->red = Config::CLEAR_R;
-    this->green = Config::CLEAR_G;
-    this->blue = Config::CLEAR_B;
-    this->alpha = Config::CLEAR_ALPHA;
-    
-    this->colors4[0] = &this->red;
-    this->colors4[1] = &this->green;
-    this->colors4[2] = &this->blue;
-    this->colors4[3] = &this->alpha;
 }
 
 AppContext &AppContext::get()
@@ -23,9 +14,9 @@ AppContext &AppContext::get()
 
 void AppContext::incrementColor(float dr, float dg, float db)
 {
-    red = std::fmod(red + dr, 1.0f);
-    green = std::fmod(green + dg, 1.0f);
-    blue = std::fmod(blue + db, 1.0f);
+    this->colors4[Config::COLOR_R_INDEX] = std::fmod(this->colors4[Config::COLOR_R_INDEX] + dr, 1.0f);
+    this->colors4[Config::COLOR_G_INDEX] = std::fmod(this->colors4[Config::COLOR_G_INDEX] + dg, 1.0f);
+    this->colors4[Config::COLOR_B_INDEX] = std::fmod(this->colors4[Config::COLOR_B_INDEX] + db, 1.0f);
 }
 
 void AppContext::initWindow(int width, int height, const char *title)
