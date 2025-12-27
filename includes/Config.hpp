@@ -1,4 +1,5 @@
 #pragma once
+#include <filesystem>
 
 namespace Config
 {
@@ -20,4 +21,6 @@ namespace Config
     constexpr int COLOR_G_INDEX = 1;
     constexpr int COLOR_B_INDEX = 2;
     constexpr int COLOR_ALPHA_INDEX = 3;
+
+    inline const std::filesystem::path CWD = std::filesystem::path(std::getenv("HOME")) / "code/learn-opengl/build";
 }

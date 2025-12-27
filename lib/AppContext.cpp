@@ -55,9 +55,7 @@ bool AppContext::exportColorToFile(const char *filename)
 {
     namespace fs = std::filesystem;
 
-    fs::path path = fs::path(std::getenv("HOME"))
-                  / "code/learn-opengl/build"
-                  / filename;
+    fs::path path = Config::CWD / filename;
 
     std::ofstream file(path);
     if (!file)
