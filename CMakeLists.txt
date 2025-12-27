@@ -8,6 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(OpenGL REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
+find_package(nlohmann_json 3.12.0 REQUIRED)
 
 add_library(glad STATIC
     external/glad/src/glad.c
@@ -47,16 +48,15 @@ add_library(imgui
 
 target_include_directories(imgui
     PUBLIC
-        external/imgui
-        external/imgui/backends
+    external/imgui
+    external/imgui/backends
 )
 
 target_link_libraries(imgui
     PUBLIC
-        glfw
-        OpenGL::GL
+    glfw
+    OpenGL::GL
 )
-
 
 add_executable(color_picker MACOSX_BUNDLE src/main.cpp)
 
@@ -73,4 +73,5 @@ target_link_libraries(color_picker
     glad
     appcontext
     imgui
+    nlohmann_json::nlohmann_json
 )
