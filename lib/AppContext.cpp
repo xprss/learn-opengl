@@ -1,6 +1,8 @@
 #include "Config.hpp"
 #include "AppContext.hpp"
 #include <iostream>
+#include <fstream>
+#include <filesystem>
 
 AppContext::AppContext()
 {
@@ -51,19 +53,23 @@ void AppContext::initWindow(int width, int height, const char *title)
 
 bool AppContext::exportColorToFile(const char *filename)
 {
-    FILE *file = fopen(filename, "w");
+    namespace fs = std::filesystem;
 
-    if (!file) 
+    fs::path path = fs::path(std::getenv("HOME"))
+                  / "code/learn-opengl/build"
+                  / filename;
+
+    std::ofstream file(path);
+    if (!file)
     {
-        throw std::runtime_error("File open error" + std::string(filename));
+        throw std::runtime_error(
+            std::string("File open error: ") + filename);
     }
 
-    fprintf(file, "R: %.3f\nG: %.3f\nB: %.3f\nA: %.3f\n",
-            this->colors4[Config::COLOR_R_INDEX],
-            this->colors4[Config::COLOR_G_INDEX],
-            this->colors4[Config::COLOR_B_INDEX],
-            this->colors4[Config::COLOR_ALPHA_INDEX]);
-    fclose(file);
+    file << "R: " << (float)colors4[Config::COLOR_R_INDEX] << "\n"
+         << "G: " << (float)colors4[Config::COLOR_G_INDEX] << "\n"
+         << "B: " << (float)colors4[Config::COLOR_B_INDEX] << "\n"
+         << "A: " << (float)colors4[Config::COLOR_ALPHA_INDEX] << "\n";
 
     return true;
 }
