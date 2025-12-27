@@ -15,7 +15,8 @@ public:
     void initWindow(int width, int height, const char *title);
     void incrementColor(float dr, float dg, float db);
     void resetColor();
-    bool exportColorToFile(const char *filename);
+    bool storeColorToFile(const std::string filename);
+    bool loadColorFromFile(const std::string filename);
 
 private:
     AppContext();

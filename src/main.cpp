@@ -44,6 +44,8 @@ int main(int argc, char const *argv[])
     ImGui_ImplGlfw_InitForOpenGL(app.window, true); // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
     ImGui_ImplOpenGL3_Init();
 
+    app.loadColorFromFile(Config::COLOR_SAVEFILE);
+
     while (!glfwWindowShouldClose(app.window))
     {
         process_input();
@@ -66,20 +68,35 @@ int main(int argc, char const *argv[])
         {
             ImGui::SetTooltip("Restores the default background color.");
         }
-        if (ImGui::Button("Export color to a file"))
+        if (ImGui::Button("Save color to a file"))
         {
             try
             {
-                app.exportColorToFile("background_color.txt");
+                app.storeColorToFile(Config::COLOR_SAVEFILE);
             }
             catch (const std::runtime_error &e)
             {
-                std::cerr << "Error exporting color to file: " << e.what() << std::endl;
+                std::cerr << "Error storing color to file: " << e.what() << std::endl;
             }
         }
         if (ImGui::IsItemHovered())
         {
-            ImGui::SetTooltip("Exports the current background color parameters to a text file.");
+            ImGui::SetTooltip("Stores the current background color parameters to a text file.");
+        }
+        if (ImGui::Button("Load color to a file"))
+        {
+            try
+            {
+                app.loadColorFromFile(Config::COLOR_SAVEFILE);
+            }
+            catch (const std::runtime_error &e)
+            {
+                std::cerr << "Error loading color to file: " << e.what() << std::endl;
+            }
+        }
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("Loads the current background color parameters to a text file.");
         }
 
         ImGui::End();

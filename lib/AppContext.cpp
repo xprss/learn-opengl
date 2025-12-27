@@ -51,7 +51,7 @@ void AppContext::initWindow(int width, int height, const char *title)
     }
 }
 
-bool AppContext::exportColorToFile(const char *filename)
+bool AppContext::storeColorToFile(const std::string filename)
 {
     namespace fs = std::filesystem;
 
@@ -68,6 +68,49 @@ bool AppContext::exportColorToFile(const char *filename)
          << "G: " << (float)colors4[Config::COLOR_G_INDEX] << "\n"
          << "B: " << (float)colors4[Config::COLOR_B_INDEX] << "\n"
          << "A: " << (float)colors4[Config::COLOR_ALPHA_INDEX] << "\n";
+
+    return true;
+}
+
+bool AppContext::loadColorFromFile(const std::string filename)
+{
+    namespace fs = std::filesystem;
+
+    fs::path path = Config::CWD / filename;
+
+    std::ifstream file(path);
+    if (!file)
+    {
+        throw std::runtime_error(
+            std::string("File open error: ") + filename);
+    }
+
+    std::string line;
+    while (std::getline(file, line))
+    {
+        char channel;
+        float value;
+        if (sscanf(line.c_str(), "%c: %f", &channel, &value) == 2)
+        {
+            switch (channel)
+            {
+            case 'R':
+                colors4[Config::COLOR_R_INDEX] = value;
+                break;
+            case 'G':
+                colors4[Config::COLOR_G_INDEX] = value;
+                break;
+            case 'B':
+                colors4[Config::COLOR_B_INDEX] = value;
+                break;
+            case 'A':
+                colors4[Config::COLOR_ALPHA_INDEX] = value;
+                break;
+            default:
+                break;
+            }
+        }
+    }
 
     return true;
 }

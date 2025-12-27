@@ -22,5 +22,9 @@ namespace Config
     constexpr int COLOR_B_INDEX = 2;
     constexpr int COLOR_ALPHA_INDEX = 3;
 
+    // background color savefile name
+    const std::string COLOR_SAVEFILE = "background_color.txt";
+
+    // Current working directory
     inline const std::filesystem::path CWD = std::filesystem::path(std::getenv("HOME")) / "code/learn-opengl/build";
 }
