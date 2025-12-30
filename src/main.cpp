@@ -14,7 +14,7 @@ int main(int argc, char const *argv[])
 {
     AppContext &app = AppContext::get();
 
-    app.initWindow(Config::WINDOW_WIDTH, Config::WINDOW_HEIGHT, Config::WINDOW_TITLE);
+    app.init_window(Config::WINDOW_WIDTH, Config::WINDOW_HEIGHT, Config::WINDOW_TITLE);
 
     if (app.window == NULL)
     {
@@ -44,7 +44,7 @@ int main(int argc, char const *argv[])
     ImGui_ImplGlfw_InitForOpenGL(app.window, true); // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
     ImGui_ImplOpenGL3_Init();
 
-    app.loadColorFromFile(Config::COLOR_SAVEFILE);
+    app.load_color_from_file(Config::COLOR_SAVEFILE);
 
     while (!glfwWindowShouldClose(app.window))
     {
@@ -59,10 +59,10 @@ int main(int argc, char const *argv[])
         ImGui::SetNextWindowPos(ImVec2(Config::WINDOW_WIDTH / 2.0f, Config::WINDOW_HEIGHT / 2.0f), ImGuiCond_Always, ImVec2(0.5f, 0.5f));
         ImGui::Begin("Color Adjuster", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
         ImGui::Text("Press R/G/B to increase Red/Green/Blue components");
-        ImGui::ColorEdit4("Background Color", app.colors4.data());
+        ImGui::ColorEdit4("Background Color", app.current_color_palette_entity->to_array().data());
         if (ImGui::Button("Reset Color"))
         {
-            app.resetColor();
+            app.reset_color();
         }
         if (ImGui::IsItemHovered())
         {
@@ -72,7 +72,7 @@ int main(int argc, char const *argv[])
         {
             try
             {
-                app.storeColorToFile(Config::COLOR_SAVEFILE);
+                app.store_color_to_file(Config::COLOR_SAVEFILE);
             }
             catch (const std::runtime_error &e)
             {
@@ -87,7 +87,7 @@ int main(int argc, char const *argv[])
         {
             try
             {
-                app.loadColorFromFile(Config::COLOR_SAVEFILE);
+                app.load_color_from_file(Config::COLOR_SAVEFILE);
             }
             catch (const std::runtime_error &e)
             {
@@ -111,7 +111,21 @@ int main(int argc, char const *argv[])
         ImGui::Text("Use Reset color button to restore default color.");
         ImGui::End();
 
-        glClearColor(app.colors4[Config::COLOR_R_INDEX], app.colors4[Config::COLOR_G_INDEX], app.colors4[Config::COLOR_B_INDEX], app.colors4[Config::COLOR_ALPHA_INDEX]);
+        ImGui::SetNextWindowPos(ImVec2(Config::WINDOW_WIDTH / 2.0f, Config::WINDOW_HEIGHT * 2.0f / 3.0f), ImGuiCond_Always, ImVec2(0.5f, -0.5f));
+        ImGui::Begin("Palette", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
+        ImGui::ColorButton("Color 1", ImVec4(app.color_palette[0].red, app.color_palette[0].green, app.color_palette[0].blue, app.color_palette[0].alpha));
+        ImGui::ColorButton("Color 2", ImVec4(app.color_palette[0].red, app.color_palette[0].green, app.color_palette[0].blue, app.color_palette[0].alpha));
+        ImGui::ColorButton("Color 3", ImVec4(app.color_palette[0].red, app.color_palette[0].green, app.color_palette[0].blue, app.color_palette[0].alpha));
+        ImGui::ColorButton("Color 4", ImVec4(app.color_palette[0].red, app.color_palette[0].green, app.color_palette[0].blue, app.color_palette[0].alpha));
+        ImGui::ColorButton("Color 5", ImVec4(app.color_palette[0].red, app.color_palette[0].green, app.color_palette[0].blue, app.color_palette[0].alpha));
+        ImGui::ColorButton("Color 6", ImVec4(app.color_palette[0].red, app.color_palette[0].green, app.color_palette[0].blue, app.color_palette[0].alpha));
+        ImGui::ColorButton("Color 7", ImVec4(app.color_palette[0].red, app.color_palette[0].green, app.color_palette[0].blue, app.color_palette[0].alpha));
+        ImGui::ColorButton("Color 8", ImVec4(app.color_palette[0].red, app.color_palette[0].green, app.color_palette[0].blue, app.color_palette[0].alpha));
+        ImGui::ColorButton("Color 9", ImVec4(app.color_palette[0].red, app.color_palette[0].green, app.color_palette[0].blue, app.color_palette[0].alpha));
+        ImGui::ColorButton("Color 10", ImVec4(app.color_palette[0].red, app.color_palette[0].green, app.color_palette[0].blue, app.color_palette[0].alpha));
+        ImGui::End();
+
+        app.reset_color();
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
@@ -170,5 +184,5 @@ void process_input()
             db = -0.001f;
         }
     }
-    app.incrementColor(dr, dg, db);
+    app.increment_color(dr, dg, db);
 }

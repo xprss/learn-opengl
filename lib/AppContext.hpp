@@ -3,6 +3,7 @@
 #include <cmath>
 #include <array>
 #include "Config.hpp"
+#include "ColorEntity.hpp"
 
 class AppContext
 {
@@ -10,13 +11,14 @@ public:
     static AppContext &get();
 
     GLFWwindow *window = nullptr;
-    std::array<float, 4> colors4{Config::CLEAR_R, Config::CLEAR_G, Config::CLEAR_B, Config::CLEAR_ALPHA};
+    std::array<ColorEntity, 20> color_palette;
+    ColorEntity *current_color_palette_entity = new ColorEntity(Config::CLEAR_R, Config::CLEAR_G, Config::CLEAR_B, Config::CLEAR_ALPHA);
 
-    void initWindow(int width, int height, const char *title);
-    void incrementColor(float dr, float dg, float db);
-    void resetColor();
-    bool storeColorToFile(const std::string filename);
-    bool loadColorFromFile(const std::string filename);
+    void init_window(int width, int height, const char *title);
+    void increment_color(float dr, float dg, float db);
+    void reset_color();
+    bool store_color_to_file(const std::string filename);
+    bool load_color_from_file(const std::string filename);
 
 private:
     AppContext();
