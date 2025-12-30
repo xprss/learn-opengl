@@ -68,7 +68,7 @@ int main(int argc, char const *argv[])
         {
             ImGui::SetTooltip("Restores the default background color.");
         }
-        if (ImGui::Button("Save color to a file"))
+        if (ImGui::Button("Save"))
         {
             try
             {
@@ -83,7 +83,7 @@ int main(int argc, char const *argv[])
         {
             ImGui::SetTooltip("Stores the current background color parameters to a text file.");
         }
-        if (ImGui::Button("Load color to a file"))
+        if (ImGui::Button("Load"))
         {
             try
             {
