@@ -103,16 +103,15 @@ int main(int argc, char const *argv[])
         ImGui::Text("Use Reset color button to restore default color.");
         ImGui::End();
 
-        ImGui::SetNextWindowPos(ImVec2(Config::WINDOW_WIDTH / 2.0f, Config::WINDOW_HEIGHT * 2.0f / 3.0f), ImGuiCond_Always, ImVec2(0.5f, -0.5f));
         ImGui::Begin("Palette", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
         for (int i = 0; i < app.color_palette.size(); ++i)
         {
             if (ImGui::ColorButton(("Color " + std::to_string(i + 1)).c_str(),
                                    ImVec4(
-                                       app.color_palette[i].color[Config::COLOR_R_INDEX],
-                                       app.color_palette[i].color[Config::COLOR_G_INDEX],
-                                       app.color_palette[i].color[Config::COLOR_B_INDEX],
-                                       app.color_palette[i].color[Config::COLOR_ALPHA_INDEX])))
+                                       app.color_palette[i].getRed(),
+                                       app.color_palette[i].getGreen(),
+                                       app.color_palette[i].getBlue(),
+                                       app.color_palette[i].getAlpha())))
             {
                 app.current_color_palette_entity = &app.color_palette[i];
             }
@@ -120,10 +119,10 @@ int main(int argc, char const *argv[])
         ImGui::End();
 
         glClearColor(
-            app.current_color_palette_entity->color[Config::COLOR_R_INDEX],
-            app.current_color_palette_entity->color[Config::COLOR_G_INDEX],
-            app.current_color_palette_entity->color[Config::COLOR_B_INDEX],
-            app.current_color_palette_entity->color[Config::COLOR_ALPHA_INDEX]);
+            app.current_color_palette_entity->getRed(),
+            app.current_color_palette_entity->getGreen(),
+            app.current_color_palette_entity->getBlue(),
+            app.current_color_palette_entity->getAlpha());
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
