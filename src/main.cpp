@@ -14,7 +14,7 @@ int main(int argc, char const *argv[])
 {
     AppContext &app = AppContext::get();
 
-    app.initWindow(Config::WINDOW_WIDTH, Config::WINDOW_HEIGHT, Config::WINDOW_TITLE);
+    app.init_window(Config::WINDOW_WIDTH, Config::WINDOW_HEIGHT, Config::WINDOW_TITLE);
 
     if (app.window == NULL)
     {
@@ -44,7 +44,7 @@ int main(int argc, char const *argv[])
     ImGui_ImplGlfw_InitForOpenGL(app.window, true); // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
     ImGui_ImplOpenGL3_Init();
 
-    app.loadColorFromFile(Config::COLOR_SAVEFILE);
+    app.load_color_from_file(Config::COLOR_SAVEFILE);
 
     while (!glfwWindowShouldClose(app.window))
     {
@@ -59,40 +59,32 @@ int main(int argc, char const *argv[])
         ImGui::SetNextWindowPos(ImVec2(Config::WINDOW_WIDTH / 2.0f, Config::WINDOW_HEIGHT / 2.0f), ImGuiCond_Always, ImVec2(0.5f, 0.5f));
         ImGui::Begin("Color Adjuster", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
         ImGui::Text("Press R/G/B to increase Red/Green/Blue components");
-        ImGui::ColorEdit4("Background Color", app.colors4.data());
+        ImGui::ColorEdit4("Color", app.current_color_palette_entity->color.data());
+
+        // Reset button
         if (ImGui::Button("Reset Color"))
         {
-            app.resetColor();
+            app.reset_color();
         }
         if (ImGui::IsItemHovered())
         {
-            ImGui::SetTooltip("Restores the default background color.");
+            ImGui::SetTooltip("Restores the default color.");
         }
+
+        // Save button
         if (ImGui::Button("Save"))
         {
-            try
-            {
-                app.storeColorToFile(Config::COLOR_SAVEFILE);
-            }
-            catch (const std::runtime_error &e)
-            {
-                std::cerr << "Error storing color to file: " << e.what() << std::endl;
-            }
+            app.store_color_to_file(Config::COLOR_SAVEFILE);
         }
         if (ImGui::IsItemHovered())
         {
             ImGui::SetTooltip("Stores the current background color parameters to a text file.");
         }
+
+        // Load button
         if (ImGui::Button("Load"))
         {
-            try
-            {
-                app.loadColorFromFile(Config::COLOR_SAVEFILE);
-            }
-            catch (const std::runtime_error &e)
-            {
-                std::cerr << "Error loading color to file: " << e.what() << std::endl;
-            }
+            app.load_color_from_file(Config::COLOR_SAVEFILE);
         }
         if (ImGui::IsItemHovered())
         {
@@ -111,7 +103,27 @@ int main(int argc, char const *argv[])
         ImGui::Text("Use Reset color button to restore default color.");
         ImGui::End();
 
-        glClearColor(app.colors4[Config::COLOR_R_INDEX], app.colors4[Config::COLOR_G_INDEX], app.colors4[Config::COLOR_B_INDEX], app.colors4[Config::COLOR_ALPHA_INDEX]);
+        ImGui::Begin("Palette", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
+        for (int i = 0; i < app.color_palette.size(); ++i)
+        {
+            if (ImGui::ColorButton(("Color " + std::to_string(i + 1)).c_str(),
+                                   ImVec4(
+                                       app.color_palette[i].getRed(),
+                                       app.color_palette[i].getGreen(),
+                                       app.color_palette[i].getBlue(),
+                                       app.color_palette[i].getAlpha())))
+            {
+                app.current_color_palette_entity = &app.color_palette[i];
+            }
+        }
+        ImGui::End();
+
+        glClearColor(
+            app.current_color_palette_entity->getRed(),
+            app.current_color_palette_entity->getGreen(),
+            app.current_color_palette_entity->getBlue(),
+            app.current_color_palette_entity->getAlpha());
+
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
@@ -170,13 +182,13 @@ void process_input()
             db = -0.001f;
         }
     }
-    app.incrementColor(dr, dg, db);
+    app.increment_color(dr, dg, db);
 
     if (glfwGetKey(app.window, GLFW_KEY_S) == GLFW_PRESS)
     {
         try
         {
-            app.storeColorToFile(Config::COLOR_SAVEFILE);
+            app.store_color_to_file(Config::COLOR_SAVEFILE);
         }
         catch (const std::runtime_error &e)
         {
@@ -188,7 +200,7 @@ void process_input()
     {
         try
         {
-            app.loadColorFromFile(Config::COLOR_SAVEFILE);
+            app.load_color_from_file(Config::COLOR_SAVEFILE);
         }
         catch (const std::runtime_error &e)
         {

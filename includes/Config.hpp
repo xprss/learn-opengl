@@ -8,7 +8,7 @@ namespace Config
     constexpr int WINDOW_HEIGHT = 600;
 
     // Window title
-    constexpr char WINDOW_TITLE[] = "xprss learning OpenGL";
+    constexpr char WINDOW_TITLE[] = "A fantastic palette of colors";
 
     // Initial colors
     constexpr float CLEAR_R = 0.0f;
@@ -21,6 +21,16 @@ namespace Config
     constexpr int COLOR_G_INDEX = 1;
     constexpr int COLOR_B_INDEX = 2;
     constexpr int COLOR_ALPHA_INDEX = 3;
+
+    // JSON savefile keys
+    constexpr const char* JSON_SAVEFILE_COLOR_OBJ_KEY = "palette_colors";
+    constexpr const char* JSON_SAVEFILE_COLOR_R_KEY = "R";
+    constexpr const char* JSON_SAVEFILE_COLOR_G_KEY = "G";
+    constexpr const char* JSON_SAVEFILE_COLOR_B_KEY = "B";
+    constexpr const char* JSON_SAVEFILE_COLOR_ALPHA_KEY = "A";
+
+    // Color palette size
+    constexpr size_t COLOR_PALETTE_SIZE = 10;
 
     // background color savefile name
     const std::string COLOR_SAVEFILE = "background_color.txt";

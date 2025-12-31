@@ -1,11 +1,16 @@
-#include "Config.hpp"
 #include "AppContext.hpp"
 #include <iostream>
 #include <fstream>
 #include <filesystem>
+#include <nlohmann/json.hpp>
 
 AppContext::AppContext()
 {
+    for (size_t i = 0; i < color_palette.size(); ++i)
+    {
+        color_palette[i] = ColorEntity(Config::CLEAR_R, Config::CLEAR_G, Config::CLEAR_B, Config::CLEAR_ALPHA);
+        current_color_palette_entity = &color_palette[0];
+    }
 }
 
 AppContext &AppContext::get()
@@ -14,22 +19,22 @@ AppContext &AppContext::get()
     return instance;
 }
 
-void AppContext::incrementColor(float dr, float dg, float db)
+void AppContext::increment_color(float dr, float dg, float db)
 {
-    this->colors4[Config::COLOR_R_INDEX] = std::fmod(this->colors4[Config::COLOR_R_INDEX] + dr, 1.0f);
-    this->colors4[Config::COLOR_G_INDEX] = std::fmod(this->colors4[Config::COLOR_G_INDEX] + dg, 1.0f);
-    this->colors4[Config::COLOR_B_INDEX] = std::fmod(this->colors4[Config::COLOR_B_INDEX] + db, 1.0f);
+    this->current_color_palette_entity->setRed(std::fmod(this->current_color_palette_entity->getRed() + dr, 1.0f));
+    this->current_color_palette_entity->setGreen(std::fmod(this->current_color_palette_entity->getGreen() + dg, 1.0f));
+    this->current_color_palette_entity->setBlue(std::fmod(this->current_color_palette_entity->getBlue() + db, 1.0f));
 }
 
-void AppContext::resetColor()
+void AppContext::reset_color()
 {
-    this->colors4[Config::COLOR_R_INDEX] = Config::CLEAR_R;
-    this->colors4[Config::COLOR_G_INDEX] = Config::CLEAR_G;
-    this->colors4[Config::COLOR_B_INDEX] = Config::CLEAR_B;
-    this->colors4[Config::COLOR_ALPHA_INDEX] = Config::CLEAR_ALPHA;
+    this->current_color_palette_entity->setRed(Config::CLEAR_R);
+    this->current_color_palette_entity->setGreen(Config::CLEAR_G);
+    this->current_color_palette_entity->setBlue(Config::CLEAR_B);
+    this->current_color_palette_entity->setAlpha(Config::CLEAR_ALPHA);
 }
 
-void AppContext::initWindow(int width, int height, const char *title)
+void AppContext::init_window(int width, int height, const char *title)
 {
     if (!glfwInit())
     {
@@ -51,65 +56,82 @@ void AppContext::initWindow(int width, int height, const char *title)
     }
 }
 
-bool AppContext::storeColorToFile(const std::string filename)
+bool AppContext::store_color_to_file(const std::string filename)
 {
-    namespace fs = std::filesystem;
-
-    fs::path path = Config::CWD / filename;
-
-    std::ofstream file(path);
-    if (!file)
+    try
     {
-        throw std::runtime_error(
-            std::string("File open error: ") + filename);
-    }
+        nlohmann::json j;
+        for (size_t i = 0; i < Config::COLOR_PALETTE_SIZE; i++)
+        {
+            j[Config::JSON_SAVEFILE_COLOR_OBJ_KEY].push_back({{Config::JSON_SAVEFILE_COLOR_R_KEY, this->color_palette[i].getRed()},
+                                                              {Config::JSON_SAVEFILE_COLOR_G_KEY, this->color_palette[i].getGreen()},
+                                                              {Config::JSON_SAVEFILE_COLOR_B_KEY, this->color_palette[i].getBlue()},
+                                                              {Config::JSON_SAVEFILE_COLOR_ALPHA_KEY, this->color_palette[i].getAlpha()}});
+        }
 
-    file << "R: " << (float)colors4[Config::COLOR_R_INDEX] << "\n"
-         << "G: " << (float)colors4[Config::COLOR_G_INDEX] << "\n"
-         << "B: " << (float)colors4[Config::COLOR_B_INDEX] << "\n"
-         << "A: " << (float)colors4[Config::COLOR_ALPHA_INDEX] << "\n";
+        std::filesystem::path path = Config::CWD / filename;
+
+        std::ofstream file(path);
+        if (!file)
+        {
+            throw std::runtime_error(
+                std::string("File open error: ") + filename);
+        }
+
+        file << j.dump(4);
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << e.what() << std::endl;
+        return false;
+    }
 
     return true;
 }
 
-bool AppContext::loadColorFromFile(const std::string filename)
+bool AppContext::load_color_from_file(const std::string filename)
 {
-    namespace fs = std::filesystem;
-
-    fs::path path = Config::CWD / filename;
-
-    std::ifstream file(path);
-    if (!file)
+    try
     {
-        throw std::runtime_error(
-            std::string("File open error: ") + filename);
-    }
+        std::filesystem::path path = Config::CWD / filename;
 
-    std::string line;
-    while (std::getline(file, line))
-    {
-        char channel;
-        float value;
-        if (sscanf(line.c_str(), "%c: %f", &channel, &value) == 2)
+        std::ifstream file(path);
+        if (!file)
         {
-            switch (channel)
-            {
-            case 'R':
-                colors4[Config::COLOR_R_INDEX] = value;
-                break;
-            case 'G':
-                colors4[Config::COLOR_G_INDEX] = value;
-                break;
-            case 'B':
-                colors4[Config::COLOR_B_INDEX] = value;
-                break;
-            case 'A':
-                colors4[Config::COLOR_ALPHA_INDEX] = value;
-                break;
-            default:
-                break;
-            }
+            throw std::runtime_error("File open error: " + path.string());
         }
+
+        nlohmann::json j;
+        file >> j;
+
+        if (!j.contains(Config::JSON_SAVEFILE_COLOR_OBJ_KEY))
+        {
+            throw std::runtime_error("Invalid JSON: missing 'color'");
+        }
+
+        nlohmann::json loaded_colors = j[Config::JSON_SAVEFILE_COLOR_OBJ_KEY];
+
+        if (loaded_colors.size() != Config::COLOR_PALETTE_SIZE)
+        {
+            throw std::runtime_error("Invalid JSON: incorrect number of colors, will start from default");
+        }
+
+        for (size_t i = 0; i < Config::COLOR_PALETTE_SIZE; i++)
+        {
+            this->color_palette[i].setRed(loaded_colors[i].value(Config::JSON_SAVEFILE_COLOR_R_KEY, Config::CLEAR_R));
+            this->color_palette[i].setGreen(loaded_colors[i].value(Config::JSON_SAVEFILE_COLOR_G_KEY, Config::CLEAR_G));
+            this->color_palette[i].setBlue(loaded_colors[i].value(Config::JSON_SAVEFILE_COLOR_B_KEY, Config::CLEAR_B));
+            this->color_palette[i].setAlpha(loaded_colors[i].value(Config::JSON_SAVEFILE_COLOR_ALPHA_KEY, Config::CLEAR_ALPHA));
+        }
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << e.what() << std::endl;
+        this->current_color_palette_entity->setRed(Config::CLEAR_R);
+        this->current_color_palette_entity->setGreen(Config::CLEAR_G);
+        this->current_color_palette_entity->setBlue(Config::CLEAR_B);
+        this->current_color_palette_entity->setAlpha(Config::CLEAR_ALPHA);
+        return false;
     }
 
     return true;
