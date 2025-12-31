@@ -77,7 +77,6 @@ bool AppContext::store_color_to_file(const std::string filename)
         }
 
         file << j.dump(4);
-        file << j.dump(4);
     }
     catch (const std::exception &e)
     {
