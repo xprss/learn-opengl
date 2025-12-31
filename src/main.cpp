@@ -70,14 +70,7 @@ int main(int argc, char const *argv[])
         }
         if (ImGui::Button("Save"))
         {
-            try
-            {
-                app.store_color_to_file(Config::COLOR_SAVEFILE);
-            }
-            catch (const std::runtime_error &e)
-            {
-                std::cerr << "Error storing color to file: " << e.what() << std::endl;
-            }
+            app.store_color_to_file(Config::COLOR_SAVEFILE);
         }
         if (ImGui::IsItemHovered())
         {
@@ -85,14 +78,7 @@ int main(int argc, char const *argv[])
         }
         if (ImGui::Button("Load"))
         {
-            try
-            {
-                app.load_color_from_file(Config::COLOR_SAVEFILE);
-            }
-            catch (const std::runtime_error &e)
-            {
-                std::cerr << "Error loading color to file: " << e.what() << std::endl;
-            }
+            app.load_color_from_file(Config::COLOR_SAVEFILE);
         }
         if (ImGui::IsItemHovered())
         {
