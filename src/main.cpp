@@ -119,6 +119,12 @@ int main(int argc, char const *argv[])
         }
         ImGui::End();
 
+        glClearColor(
+            app.current_color_palette_entity->color[Config::COLOR_R_INDEX],
+            app.current_color_palette_entity->color[Config::COLOR_G_INDEX],
+            app.current_color_palette_entity->color[Config::COLOR_B_INDEX],
+            app.current_color_palette_entity->color[Config::COLOR_ALPHA_INDEX]);
+
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
