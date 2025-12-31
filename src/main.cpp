@@ -71,7 +71,7 @@ int main(int argc, char const *argv[])
         {
             ImGui::SetTooltip("Restores the default color.");
         }
-        if (ImGui::Button("Save color to a file"))
+        if (ImGui::Button("Save"))
         {
             try
             {
@@ -87,7 +87,7 @@ int main(int argc, char const *argv[])
         {
             ImGui::SetTooltip("Stores the current background color parameters to a text file.");
         }
-        if (ImGui::Button("Load color to a file"))
+        if (ImGui::Button("Load"))
         {
             try
             {
@@ -182,5 +182,28 @@ void process_input()
         }
     }
     app.increment_color(dr, dg, db);
-    app.increment_color(dr, dg, db);
+
+    if (glfwGetKey(app.window, GLFW_KEY_S) == GLFW_PRESS)
+    {
+        try
+        {
+            app.store_color_to_file(Config::COLOR_SAVEFILE);
+        }
+        catch (const std::runtime_error &e)
+        {
+            std::cerr << "Error storing color to file: " << e.what() << std::endl;
+        }
+    }
+
+    if (glfwGetKey(app.window, GLFW_KEY_L) == GLFW_PRESS)
+    {
+        try
+        {
+            app.load_color_from_file(Config::COLOR_SAVEFILE);
+        }
+        catch (const std::runtime_error &e)
+        {
+            std::cerr << "Error loading color to file: " << e.what() << std::endl;
+        }
+    }
 }
