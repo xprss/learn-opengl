@@ -4,6 +4,7 @@
 #include <fstream>
 #include <filesystem>
 #include <nlohmann/json.hpp>
+#include <nlohmann/json.hpp>
 
 AppContext::AppContext()
 {
@@ -16,12 +17,14 @@ AppContext &AppContext::get()
 }
 
 void AppContext::increment_color(float dr, float dg, float db)
+void AppContext::increment_color(float dr, float dg, float db)
 {
     this->current_color_palette_entity->color[Config::COLOR_R_INDEX] = std::fmod(this->current_color_palette_entity->color[Config::COLOR_R_INDEX] + dr, 1.0f);
     this->current_color_palette_entity->color[Config::COLOR_G_INDEX] = std::fmod(this->current_color_palette_entity->color[Config::COLOR_G_INDEX] + dg, 1.0f);
     this->current_color_palette_entity->color[Config::COLOR_B_INDEX] = std::fmod(this->current_color_palette_entity->color[Config::COLOR_B_INDEX] + db, 1.0f);
 }
 
+void AppContext::reset_color()
 void AppContext::reset_color()
 {
     this->current_color_palette_entity->color[Config::COLOR_R_INDEX] = Config::CLEAR_R;
@@ -30,6 +33,7 @@ void AppContext::reset_color()
     this->current_color_palette_entity->color[Config::COLOR_ALPHA_INDEX] = Config::CLEAR_ALPHA;
 }
 
+void AppContext::init_window(int width, int height, const char *title)
 void AppContext::init_window(int width, int height, const char *title)
 {
     if (!glfwInit())
@@ -53,6 +57,7 @@ void AppContext::init_window(int width, int height, const char *title)
 }
 
 bool AppContext::store_color_to_file(const std::string filename)
+bool AppContext::store_color_to_file(const std::string filename)
 {
     nlohmann::json j;
     j[Config::JSON_SAVEFILE_COLOR_OBJ_KEY] = {
@@ -61,6 +66,7 @@ bool AppContext::store_color_to_file(const std::string filename)
         {Config::JSON_SAVEFILE_COLOR_B_KEY, this->current_color_palette_entity->color[Config::COLOR_B_INDEX]},
         {Config::JSON_SAVEFILE_COLOR_ALPHA_KEY, this->current_color_palette_entity->color[Config::COLOR_ALPHA_INDEX]}};
 
+    std::filesystem::path path = Config::CWD / filename;
     std::filesystem::path path = Config::CWD / filename;
 
     std::ofstream file(path);
@@ -71,10 +77,12 @@ bool AppContext::store_color_to_file(const std::string filename)
     }
 
     file << j.dump(4);
+    file << j.dump(4);
 
     return true;
 }
 
+bool AppContext::load_color_from_file(const std::string filename)
 bool AppContext::load_color_from_file(const std::string filename)
 {
     try
@@ -114,3 +122,4 @@ bool AppContext::load_color_from_file(const std::string filename)
 
     return true;
 }
+
