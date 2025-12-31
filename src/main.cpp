@@ -15,7 +15,6 @@ int main(int argc, char const *argv[])
     AppContext &app = AppContext::get();
 
     app.init_window(Config::WINDOW_WIDTH, Config::WINDOW_HEIGHT, Config::WINDOW_TITLE);
-    app.init_window(Config::WINDOW_WIDTH, Config::WINDOW_HEIGHT, Config::WINDOW_TITLE);
 
     if (app.window == NULL)
     {
@@ -46,7 +45,6 @@ int main(int argc, char const *argv[])
     ImGui_ImplOpenGL3_Init();
 
     app.load_color_from_file(Config::COLOR_SAVEFILE);
-    app.load_color_from_file(Config::COLOR_SAVEFILE);
 
     while (!glfwWindowShouldClose(app.window))
     {
@@ -65,7 +63,6 @@ int main(int argc, char const *argv[])
         if (ImGui::Button("Reset Color"))
         {
             app.reset_color();
-            app.reset_color();
         }
         if (ImGui::IsItemHovered())
         {
@@ -75,7 +72,6 @@ int main(int argc, char const *argv[])
         {
             try
             {
-                app.store_color_to_file(Config::COLOR_SAVEFILE);
                 app.store_color_to_file(Config::COLOR_SAVEFILE);
             }
             catch (const std::runtime_error &e)
@@ -91,7 +87,6 @@ int main(int argc, char const *argv[])
         {
             try
             {
-                app.load_color_from_file(Config::COLOR_SAVEFILE);
                 app.load_color_from_file(Config::COLOR_SAVEFILE);
             }
             catch (const std::runtime_error &e)
