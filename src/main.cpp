@@ -171,4 +171,28 @@ void process_input()
         }
     }
     app.incrementColor(dr, dg, db);
+
+    if (glfwGetKey(app.window, GLFW_KEY_S) == GLFW_PRESS)
+    {
+        try
+        {
+            app.storeColorToFile(Config::COLOR_SAVEFILE);
+        }
+        catch (const std::runtime_error &e)
+        {
+            std::cerr << "Error storing color to file: " << e.what() << std::endl;
+        }
+    }
+
+    if (glfwGetKey(app.window, GLFW_KEY_L) == GLFW_PRESS)
+    {
+        try
+        {
+            app.loadColorFromFile(Config::COLOR_SAVEFILE);
+        }
+        catch (const std::runtime_error &e)
+        {
+            std::cerr << "Error loading color to file: " << e.what() << std::endl;
+        }
+    }
 }
