@@ -1,9 +1,7 @@
-#include "Config.hpp"
 #include "AppContext.hpp"
 #include <iostream>
 #include <fstream>
 #include <filesystem>
-#include <nlohmann/json.hpp>
 #include <nlohmann/json.hpp>
 
 AppContext::AppContext()
@@ -55,24 +53,32 @@ void AppContext::init_window(int width, int height, const char *title)
 
 bool AppContext::store_color_to_file(const std::string filename)
 {
-    nlohmann::json j;
-    j[Config::JSON_SAVEFILE_COLOR_OBJ_KEY] = {
-        {Config::JSON_SAVEFILE_COLOR_R_KEY, this->current_color_palette_entity->color[Config::COLOR_R_INDEX]},
-        {Config::JSON_SAVEFILE_COLOR_G_KEY, this->current_color_palette_entity->color[Config::COLOR_G_INDEX]},
-        {Config::JSON_SAVEFILE_COLOR_B_KEY, this->current_color_palette_entity->color[Config::COLOR_B_INDEX]},
-        {Config::JSON_SAVEFILE_COLOR_ALPHA_KEY, this->current_color_palette_entity->color[Config::COLOR_ALPHA_INDEX]}};
-
-    std::filesystem::path path = Config::CWD / filename;
-
-    std::ofstream file(path);
-    if (!file)
+    try
     {
-        throw std::runtime_error(
-            std::string("File open error: ") + filename);
-    }
+        nlohmann::json j;
+        j[Config::JSON_SAVEFILE_COLOR_OBJ_KEY] = {
+            {Config::JSON_SAVEFILE_COLOR_R_KEY, this->current_color_palette_entity->color[Config::COLOR_R_INDEX]},
+            {Config::JSON_SAVEFILE_COLOR_G_KEY, this->current_color_palette_entity->color[Config::COLOR_G_INDEX]},
+            {Config::JSON_SAVEFILE_COLOR_B_KEY, this->current_color_palette_entity->color[Config::COLOR_B_INDEX]},
+            {Config::JSON_SAVEFILE_COLOR_ALPHA_KEY, this->current_color_palette_entity->color[Config::COLOR_ALPHA_INDEX]}};
 
-    file << j.dump(4);
-    file << j.dump(4);
+        std::filesystem::path path = Config::CWD / filename;
+
+        std::ofstream file(path);
+        if (!file)
+        {
+            throw std::runtime_error(
+                std::string("File open error: ") + filename);
+        }
+
+        file << j.dump(4);
+        file << j.dump(4);
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << e.what() << std::endl;
+        return false;
+    }
 
     return true;
 }
@@ -116,4 +122,3 @@ bool AppContext::load_color_from_file(const std::string filename)
 
     return true;
 }
-
