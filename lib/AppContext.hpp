@@ -11,8 +11,8 @@ public:
     static AppContext &get();
 
     GLFWwindow *window = nullptr;
-    std::array<ColorEntity, 20> color_palette;
-    ColorEntity *current_color_palette_entity = new ColorEntity(Config::CLEAR_R, Config::CLEAR_G, Config::CLEAR_B, Config::CLEAR_ALPHA);
+    std::array<ColorEntity, Config::COLOR_PALETTE_SIZE> color_palette;
+    ColorEntity *current_color_palette_entity = nullptr;
 
     void init_window(int width, int height, const char *title);
     void increment_color(float dr, float dg, float db);

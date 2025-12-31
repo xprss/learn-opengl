@@ -6,6 +6,11 @@
 
 AppContext::AppContext()
 {
+    for (size_t i = 0; i < color_palette.size(); ++i)
+    {
+        color_palette[i] = ColorEntity(0.0f, 0.0f, 0.0f, 1.0f);
+        current_color_palette_entity = &color_palette[0];
+    }
 }
 
 AppContext &AppContext::get()

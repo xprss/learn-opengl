@@ -60,6 +60,8 @@ int main(int argc, char const *argv[])
         ImGui::Begin("Color Adjuster", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
         ImGui::Text("Press R/G/B to increase Red/Green/Blue components");
         ImGui::ColorEdit4("Color", app.current_color_palette_entity->color.data());
+
+        // Reset button
         if (ImGui::Button("Reset Color"))
         {
             app.reset_color();
@@ -68,6 +70,8 @@ int main(int argc, char const *argv[])
         {
             ImGui::SetTooltip("Restores the default color.");
         }
+
+        // Save button
         if (ImGui::Button("Save"))
         {
             app.store_color_to_file(Config::COLOR_SAVEFILE);
@@ -76,6 +80,8 @@ int main(int argc, char const *argv[])
         {
             ImGui::SetTooltip("Stores the current background color parameters to a text file.");
         }
+
+        // Load button
         if (ImGui::Button("Load"))
         {
             app.load_color_from_file(Config::COLOR_SAVEFILE);
@@ -99,9 +105,18 @@ int main(int argc, char const *argv[])
 
         ImGui::SetNextWindowPos(ImVec2(Config::WINDOW_WIDTH / 2.0f, Config::WINDOW_HEIGHT * 2.0f / 3.0f), ImGuiCond_Always, ImVec2(0.5f, -0.5f));
         ImGui::Begin("Palette", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
-        ImGui::ColorButton("Color 1", ImVec4(app.color_palette[0].color[Config::COLOR_R_INDEX], app.color_palette[0].color[Config::COLOR_G_INDEX], app.color_palette[0].color[Config::COLOR_B_INDEX], app.color_palette[0].color[Config::COLOR_ALPHA_INDEX]));
-        ImGui::ColorButton("Color 2", ImVec4(app.color_palette[0].color[Config::COLOR_R_INDEX], app.color_palette[0].color[Config::COLOR_G_INDEX], app.color_palette[0].color[Config::COLOR_B_INDEX], app.color_palette[0].color[Config::COLOR_ALPHA_INDEX]));
-        ImGui::ColorButton("Color 3", ImVec4(app.color_palette[0].color[Config::COLOR_R_INDEX], app.color_palette[0].color[Config::COLOR_G_INDEX], app.color_palette[0].color[Config::COLOR_B_INDEX], app.color_palette[0].color[Config::COLOR_ALPHA_INDEX]));
+        for (int i = 0; i < app.color_palette.size(); ++i)
+        {
+            if (ImGui::ColorButton(("Color " + std::to_string(i + 1)).c_str(),
+                                   ImVec4(
+                                       app.color_palette[i].color[Config::COLOR_R_INDEX],
+                                       app.color_palette[i].color[Config::COLOR_G_INDEX],
+                                       app.color_palette[i].color[Config::COLOR_B_INDEX],
+                                       app.color_palette[i].color[Config::COLOR_ALPHA_INDEX])))
+            {
+                app.current_color_palette_entity = &app.color_palette[i];
+            }
+        }
         ImGui::End();
 
         ImGui::Render();
