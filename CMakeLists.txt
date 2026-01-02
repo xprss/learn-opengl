@@ -21,6 +21,7 @@ target_include_directories(glad
 
 add_library(appcontext
     lib/AppContext.cpp
+    lib/ColorEntity.cpp
 )
 
 target_include_directories(appcontext
