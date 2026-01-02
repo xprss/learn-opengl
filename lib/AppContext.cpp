@@ -11,6 +11,8 @@ AppContext::AppContext()
         color_palette[i] = ColorEntity(Config::CLEAR_R, Config::CLEAR_G, Config::CLEAR_B, Config::CLEAR_ALPHA);
         current_color_palette_entity = &color_palette[0];
     }
+
+    this->color_palette_rule = new ArmonicTriad();
 }
 
 AppContext &AppContext::get()
@@ -135,4 +137,9 @@ bool AppContext::load_color_from_file(const std::string filename)
     }
 
     return true;
+}
+
+void AppContext::react()
+{
+    this->color_palette_rule->react(this->color_palette, this->current_color_palette_entity);
 }

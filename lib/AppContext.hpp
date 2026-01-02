@@ -4,6 +4,7 @@
 #include <array>
 #include "Config.hpp"
 #include "ColorEntity.hpp"
+#include "palette-rules/PaletteRules.hpp"
 
 class AppContext
 {
@@ -13,12 +14,14 @@ public:
     GLFWwindow *window = nullptr;
     std::array<ColorEntity, Config::COLOR_PALETTE_SIZE> color_palette;
     ColorEntity *current_color_palette_entity = nullptr;
+    ColorPaletteRule *color_palette_rule;
 
     void init_window(int width, int height, const char *title);
     void increment_color(float dr, float dg, float db);
     void reset_color();
     bool store_color_to_file(const std::string filename);
     bool load_color_from_file(const std::string filename);
+    void react();
 
 private:
     AppContext();

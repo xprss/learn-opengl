@@ -118,6 +118,11 @@ int main(int argc, char const *argv[])
         }
         ImGui::End();
 
+        // Once a color is set, the color palette
+        // rule must react to the change
+        // accordingly with its implementation.
+        app.react();
+
         glClearColor(
             app.current_color_palette_entity->getRed(),
             app.current_color_palette_entity->getGreen(),
