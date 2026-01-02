@@ -30,7 +30,7 @@ namespace Config
     constexpr const char* JSON_SAVEFILE_COLOR_ALPHA_KEY = "A";
 
     // Color palette size
-    constexpr size_t COLOR_PALETTE_SIZE = 10;
+    constexpr size_t COLOR_PALETTE_SIZE = 3;
 
     // background color savefile name
     const std::string COLOR_SAVEFILE = "background_color.txt";
