@@ -118,6 +118,22 @@ int main(int argc, char const *argv[])
         }
         ImGui::End();
 
+        ImGui::SetNextWindowPos(ImVec2(Config::WINDOW_WIDTH / 2.0f, Config::WINDOW_HEIGHT / 4.0f * 3.0f), ImGuiCond_Always, ImVec2(0.5f, 0.0f));
+        ImGui::Begin("Color rules", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
+        ImGui::Text("The current color palette rule is %s", Palette::to_string(app.current_palette_rule_type).data());
+        for (int i = 0; i < Palette::paletteRuleTypes.size(); ++i) 
+        {
+            Palette::PaletteRuleType rule_type = static_cast<Palette::PaletteRuleType>(i);
+            ImGui::RadioButton(
+                Palette::to_string(rule_type).data(),
+                app.current_palette_rule_type == rule_type);
+            if (ImGui::IsItemClicked())
+            {
+                app.set_color_palette_rule(rule_type);
+            }
+        }
+        ImGui::End();
+
         // Once a color is set, the color palette
         // rule must react to the change
         // accordingly with its implementation.
