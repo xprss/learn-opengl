@@ -28,6 +28,10 @@ target_include_directories(appcontext
     PUBLIC lib
 )
 
+target_compile_options(appcontext PRIVATE
+    $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall -Wextra -Wswitch -Wswitch-enum>
+)
+
 target_link_libraries(appcontext
     PUBLIC
     glfw
