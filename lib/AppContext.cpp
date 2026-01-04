@@ -13,6 +13,7 @@ AppContext::AppContext()
     }
 
     this->color_palette_rule = new ArmonicTriad();
+    this->current_palette_rule_type = Palette::PaletteRuleType::ARMONIC_TRIAD;
 }
 
 AppContext &AppContext::get()
@@ -142,4 +143,14 @@ bool AppContext::load_color_from_file(const std::string filename)
 void AppContext::react()
 {
     this->color_palette_rule->react(this->color_palette, this->current_color_palette_entity);
+}
+
+void AppContext::set_color_palette_rule(Palette::PaletteRuleType next_type)
+{
+    if (this->current_palette_rule_type != next_type)
+    {
+        delete this->color_palette_rule;
+        this->color_palette_rule = Palette::createPaletteRule(next_type);
+        this->current_palette_rule_type = next_type;
+    }
 }

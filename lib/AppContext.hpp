@@ -14,6 +14,7 @@ public:
     GLFWwindow *window = nullptr;
     std::array<ColorEntity, Config::COLOR_PALETTE_SIZE> color_palette;
     ColorEntity *current_color_palette_entity = nullptr;
+    Palette::PaletteRuleType current_palette_rule_type;
     ColorPaletteRule *color_palette_rule;
 
     void init_window(int width, int height, const char *title);
@@ -22,6 +23,7 @@ public:
     bool store_color_to_file(const std::string filename);
     bool load_color_from_file(const std::string filename);
     void react();
+    void set_color_palette_rule(Palette::PaletteRuleType next_type);
 
 private:
     AppContext();
